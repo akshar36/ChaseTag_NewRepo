@@ -12,6 +12,7 @@ public class ChaserAI : MonoBehaviour
     Path path;
     int currentWayPoint;
     bool reachedEndofPath = false;
+    private bool isChasing = false;
 
     Seeker seeker;
     Rigidbody2D rb;
@@ -26,8 +27,11 @@ public class ChaserAI : MonoBehaviour
 
     void UpdatePath()
     {
-        if(seeker.IsDone()){
-         seeker.StartPath(rb.position, target.position, OnPathComplete);
+        if (isChasing)
+        {
+            if(seeker.IsDone()){
+            seeker.StartPath(rb.position, target.position, OnPathComplete);
+            }
         }
 
     }
@@ -43,29 +47,36 @@ public class ChaserAI : MonoBehaviour
 
     void Update()
     {
-        if(path == null)
+        if (isChasing)
         {
-            return;
-        }
-        if(currentWayPoint >= path.vectorPath.Count)
-        {
-            reachedEndofPath = true;
-            return;
-        }
-        else {
-            reachedEndofPath = false;
-        }
+            if(path == null)
+            {
+                return;
+            }
+            if(currentWayPoint >= path.vectorPath.Count)
+            {
+                reachedEndofPath = true;
+                return;
+            }
+            else {
+                reachedEndofPath = false;
+            }
 
-        Vector2 direction = ((Vector2) path.vectorPath[currentWayPoint] - rb.position).normalized;
-        Vector2 force = direction*movespeed*Time.deltaTime;
+            Vector2 direction = ((Vector2) path.vectorPath[currentWayPoint] - rb.position).normalized;
+            Vector2 force = direction*movespeed*Time.deltaTime;
 
-        rb.AddForce(force);
+            rb.AddForce(force);
 
-        float distance = Vector2.Distance(rb.position, path.vectorPath[currentWayPoint]);
+            float distance = Vector2.Distance(rb.position, path.vectorPath[currentWayPoint]);
 
-        if(distance< nextWayPointDistance)
-        {
-            currentWayPoint++;
+            if(distance< nextWayPointDistance)
+            {
+                currentWayPoint++;
+            }
         }
+    }
+    public void StartChasing()
+    {
+        isChasing = true;
     }
 }

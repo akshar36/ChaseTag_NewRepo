@@ -3666,7 +3666,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimeLeft: 100
-  TimerOn: 1
   GameText: {fileID: 578406109}
   TimerTxt: {fileID: 1471024338}
 --- !u!114 &1471024338
@@ -3702,7 +3701,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &1471024339
 CanvasRenderer:
   m_ObjectHideFlags: 0

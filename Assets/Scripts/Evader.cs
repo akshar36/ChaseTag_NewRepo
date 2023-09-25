@@ -11,7 +11,8 @@ public class Evader : MonoBehaviour
     public float jumpForce = 8.0f;
     private Rigidbody2D rb;
     private bool isGrounded;
-
+    private ChaserAI chaserController;
+    private TimerScript timerController;
     private int platformCount = 3;
     public GameObject floorprefab;
     private GameObject chaser;
@@ -22,6 +23,7 @@ public class Evader : MonoBehaviour
     private SpriteRenderer chaserSpriteRenderer;
     public Sprite caughtSprite;
     public Sprite smilingSprite;
+    private bool evaderMoved = false;
 
     void Start()
     {
@@ -29,13 +31,21 @@ public class Evader : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         GameObject chaser = GameObject.Find("Chaser");
+        GameObject timer = GameObject.Find("TimerTxt");
         chaserSpriteRenderer = chaser.GetComponent<SpriteRenderer>();
+        chaserController = chaser.GetComponent<ChaserAI>();
+        timerController = timer.GetComponent<TimerScript>();
     }
 
     void Update()
     {
         float moveInput = Input.GetAxis("Horizontal");
         Vector2 moveDirection = new Vector2(moveInput, 0);
+        if(rb.velocity.magnitude > 5f && !evaderMoved){
+            Debug.Log("rb.velocity.magnitude "+ rb.velocity.magnitude);
+            evaderMoved = true;
+            StartRunning();
+        }
 
         rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
 
@@ -86,5 +96,12 @@ public class Evader : MonoBehaviour
     {
         GameText.gameObject.SetActive(false);
         TimerTxt.gameObject.SetActive(true);
+    }
+
+    public void StartRunning()
+    {
+        // Start the chaser's movement
+        chaserController.StartChasing();
+        timerController.StartTime();
     }
 }

@@ -4,18 +4,17 @@ using UnityEngine.UI;
 public class TimerScript : MonoBehaviour
 {
     public float TimeLeft;
-    public bool TimerOn = false;
     public Text GameText;
     public Text TimerTxt;
-   
+    private bool startTime = false;
     void Start()
     {
-        TimerOn = true;
+        updateTimer(99);
     }
 
     void Update()
     {
-        if(TimerOn)
+        if(startTime)
         {
             if(TimeLeft > 0)
             {
@@ -24,10 +23,8 @@ public class TimerScript : MonoBehaviour
             }
             else
             {
-                Debug.Log("Time is UP!");
                 showGameWin();
                 TimeLeft = 0;
-                TimerOn = false;
             }
         }
     }
@@ -61,5 +58,9 @@ public class TimerScript : MonoBehaviour
         ColorUtility.TryParseHtmlString("#" + hex, out color);
 
         return color;
+    }
+    public void StartTime()
+    {
+        startTime = true;
     }
 }
